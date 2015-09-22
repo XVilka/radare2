@@ -58,7 +58,7 @@ static int r_debug_gdb_reg_read(RDebug *dbg, int type, ut8 *buf, int size) {
 	memcpy (buf, desc->data, copy_size);
 	memset (reg_buf, 0, buflen);
 	memcpy (reg_buf, desc->data, copy_size);
-#if 0
+#if 1
 	int i;
 	//for(i=0;i<168;i++) {
 	for(i=0;i<copy_size;i++) {
@@ -600,7 +600,7 @@ struct r_debug_plugin_t r_debug_plugin_gdb = {
 	/* TODO: Add support for more architectures here */
 	.license = "LGPL3",
 	.arch = "x86,arm,sh,mips,avr",
-	.bits = R_SYS_BITS_32 | R_SYS_BITS_64,
+	.bits = R_SYS_BITS_16 | R_SYS_BITS_32 | R_SYS_BITS_64,
 	.step = r_debug_gdb_step,
 	.cont = r_debug_gdb_continue,
 	.attach = &r_debug_gdb_attach,
