@@ -433,6 +433,7 @@ int gdbr_read_registers(libgdbr_t* g) {
 		return ret;
 
 	if (read_packet (g) > 0) {
+		hexdump (g->read_buff, g->data_len, 0);
 		parse_packet (g, 0);
 		return handle_g (g);
 	}
