@@ -11,6 +11,7 @@ int handle_g(libgdbr_t* g) {
 		return -1;
 	}
 	g->data_len = g->data_len / 2;
+	hexdump(g->data, g->data_len, 0);
 	return send_ack (g);
 }
 
