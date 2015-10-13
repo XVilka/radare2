@@ -433,8 +433,10 @@ int gdbr_read_registers(libgdbr_t* g) {
 		return ret;
 
 	if (read_packet (g) > 0) {
+		eprintf("before parsing\n");
 		hexdump (g->read_buff, g->data_len, 0);
 		parse_packet (g, 0);
+		eprintf("after parsing\g");
 		hexdump (g->data, g->data_len, 0);
 		return handle_g (g);
 	}
