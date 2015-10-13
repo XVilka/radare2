@@ -435,6 +435,7 @@ int gdbr_read_registers(libgdbr_t* g) {
 	if (read_packet (g) > 0) {
 		hexdump (g->read_buff, g->data_len, 0);
 		parse_packet (g, 0);
+		hexdump (g->data, g->data_len, 0);
 		return handle_g (g);
 	}
 	return -1;
