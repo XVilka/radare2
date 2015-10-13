@@ -452,7 +452,8 @@ int gdbr_read_memory(libgdbr_t* g, ut64 address, ut64 len) {
 	if (ret < 0)
 		return ret;
 
-	if (read_packet (g) > 0) { 
+	if (read_packet (g) > 0) {
+		hexdump (g->read_buff, g->data_len, 0);
 		parse_packet (g, 0);
 		return handle_m (g);
 	}
