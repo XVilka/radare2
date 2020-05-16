@@ -1048,6 +1048,33 @@ typedef struct r_anal_reil {
 	char pc[8];
 } RAnalReil;
 
+typedef enum {
+	SMT_ARG_REG,           // CPU Register
+	SMT_ARG_TEMP,          // Temporary variable
+	SMT_ARG_CONST,         // Constant value
+	SMT_ARG_ESIL_INTERNAL, // Used to resolve ESIL internal flags
+	SMT_ARG_NONE           // Operand not used by the expression
+} RAnalSMTArgType;
+
+// Arguments to a SMT expression
+typedef struct r_anal_smt_arg {
+	RAnalSMTArgType type; // Type of the argument
+	ut8 size;              // Size of the argument in bytes
+	char name[32];         // Name of the argument
+} RAnalSMTArg;
+
+typedef struct r_anal_smt {
+	char* logic; // To store the logic name
+	RList *vectors; // Table of the defined bitvectors
+	char old[32]; // Used to compute flags.
+	char cur[32];
+	ut8 lastsz;
+	ut64 addr;           // Used for instruction sequencing. Check esil2reil.c for details.
+	int skip;
+	char if_buf[64];
+	char pc[8];
+} RAnalSMT;
+
 // must be a char
 #define ESIL_INTERNAL_PREFIX '$'
 #define ESIL_STACK_NAME "esil.ram"
@@ -1148,6 +1175,7 @@ typedef struct r_anal_esil_t {
 	int trace_idx;
 	RAnalEsilCallbacks cb;
 	RAnalReil *Reil;
+	RAnalSMT *smt;
 	// this is so cursed, can we please remove external commands from esil internals.
 	// Function pointers are fine, but not commands
 	char *cmd_step; // r2 (external) command to run before a step is performed

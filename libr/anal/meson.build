@@ -12,6 +12,7 @@ r_anal_sources = [
   'diff.c',
   'esil.c',
   'esil2reil.c',
+  'esil2smt.c,
   'esil_stats.c',
   'esil_trace.c',
   'esil_interrupt.c',

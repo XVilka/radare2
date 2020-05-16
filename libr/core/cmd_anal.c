@@ -174,7 +174,8 @@ static const char *help_msg_ae[] = {
 	"aesu", " [addr]", "step until given address",
 	"aesue", " [esil]", "step until esil expression match",
 	"aesuo", " [optype]", "step until given opcode type",
-	"aetr", "[esil]", "Convert an ESIL Expression to REIL",
+	"aetr", "[esil]", "Convert an ESIL expression to REIL",
+	"aetz", "[esil]", "Convert an ESIL expression to SMTLib2",
 	"aex", " [hex]", "evaluate opcode expression",
 	NULL
 };
@@ -6160,8 +6161,25 @@ static void cmd_anal_esil(RCore *core, const char *input) {
 				break;
 			}
 			break;
+		case 'z': // "aetz"
+		{
+			// anal ESIL to SMTLib2 expressions.
+			RAnalEsil *esil = r_anal_esil_new (stacksize, iotrap, addrsize);
+			if (!esil) {
+				return;
+			}
+			r_anal_esil_to_smt_setup (esil, core->anal, romem, stats);
+			r_anal_esil_set_pc (esil, core->offset);
+			r_anal_esil_parse (esil, input + 2);
+			r_anal_esil_dumpstack (esil);
+			r_anal_esil_free (esil);
+			break;
+		}
 		default:
-			eprintf ("Unknown command. Use `aetr`.\n");
+			r_cons_printf ("Usage: aet[rsz]\n");
+			r_cons_printf (" aetr  convert an ESIL expression to REIL\n");
+			r_cons_printf (" aets  manipulate ESIL sessions\n");
+			r_cons_printf (" aetz  convert an ESIL expression to SMTLib2\n");
 			break;
 		}
 		break;
